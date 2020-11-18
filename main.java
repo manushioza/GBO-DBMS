@@ -6,7 +6,7 @@ public class Main {
         boolean run = true;
         while (run) {
             System.out.print("\n **********************************\n");
-            System.out.print("*       Welcome to GBO DBMS!     *\n");
+            System.out.print("*        Welcome to GBO DBMS!     *\n");
             System.out.print("**********************************\n");
             System.out.print("Select an option from below: \n [1] Manager \n [2] Customer \n [0] Quit \n");
             System.out.print("My choice: ");

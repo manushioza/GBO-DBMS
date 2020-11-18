@@ -13,7 +13,7 @@ public class Manager {
 
     public String deleteCustomer(int customerID) {
 
-        return "";
+        return " ";
     }
 
     public String addAccount(int accountID, int branchID, String accountType, double balance, double rate,

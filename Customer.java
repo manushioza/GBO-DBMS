@@ -13,7 +13,7 @@ public class Customer {
         // For Transaction_Timestamp attribute in SQL
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        return "";
+        return " ";
     }
 
     public String viewTransaction(int transactionID) {
