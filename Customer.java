@@ -1,4 +1,6 @@
 import java.sql.Timestamp;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Customer {
 
@@ -13,7 +15,7 @@ public class Customer {
         // For Transaction_Timestamp attribute in SQL
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-        return " ";
+        return "";
     }
 
     public String viewTransaction(int transactionID) {

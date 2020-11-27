@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.sql.*;
 
- class Main {
+  class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         boolean run = true;
@@ -16,7 +16,7 @@ import java.sql.*;
             if (choice == 1) {
                 try {
                     Class.forName("oracle.jdbc.driver.OracleDriver");
-                    Connection con =  DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl", "ksutar", "09119744");
+                    Connection con =  DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl", "rmjoshi", "03248329");
                     Statement st = con.createStatement();
                     String sql = "SELECT * FROM Accounts";
                     ResultSet rs = st.executeQuery(sql);
@@ -27,7 +27,11 @@ import java.sql.*;
                     }catch(Exception e) {
                         System.out.println(e);
                     }
+
+                    
             } else if (choice == 2) {
+
+
 
             } else if (choice == 0) {
                 run = false;
