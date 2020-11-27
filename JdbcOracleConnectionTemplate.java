@@ -25,7 +25,7 @@ public class JdbcOracleConnectionTemplate {
             // "jdbc:oracle:thin:username/password@oracle.scs.ryerson.ca:1521:orcl"; // that
             // is school Oracle database and you can only use it in the labs
 
-            String dbURL1 = "jdbc:oracle:thin:username/password@localhost:1521:xe";
+            String dbURL1 = "jdbc:oracle:thin:moza/10059715@localhost:1521:xe";
             /*
              * This XE or local database that you installed on your laptop. 1521 is the
              * default port for database, change according to what you used during

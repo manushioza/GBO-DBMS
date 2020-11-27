@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Manager {
@@ -12,19 +14,32 @@ public class Manager {
     // Declare Manager ID
     private static int managerID;
     Scanner input = new Scanner(System.in);
+    ArrayList<Integer> managerIDs = new ArrayList<Integer>();
 
     //Manager Constructor
     public Manager() {
-        // Gets manager ID and stores it into variable
-        System.out.print("\n > Please enter your 5 digit manager id: ");
-        int mID = input.nextInt();
-        this.managerID = mID;
+        managerIDs.addAll(Arrays.asList(45030, 85130, 45131, 45332, 45433, 12933, 45534, 45635, 45736, 45837));
+        boolean b = true;
+        while (b) {
 
+// Gets manager ID and stores it into variable
+            System.out.print("\n > Please enter your 5 digit manager id: ");
+            int mID = input.nextInt();
+            this.managerID = mID;
+
+            if (!managerIDs.contains(mID)) {
+                System.out.print("\nIncorrect Manager ID. Please try again.\n");
+            } else {
+                b = false;
+                Prompts();
+            }
+
+        }
         //Goes to Prompts function to display manager role options
-        Prompts();
+
     }
 
-    //Displays Manager options
+//Displays Manager options
     public void Prompts() {
         System.out.print("\nSelect an option from below: \n [1] Add Customer(please add an account before you do this) \n [2] Delete Customer \n [3] Add Account \n [4] Delete Account Customer \n [5] View Transactions Customer \n [0] Quit \n");
         System.out.print(" > My Choice: ");
@@ -83,7 +98,7 @@ public class Manager {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
-                        "moza", "10059715");
+                        "username", "password");
                 Statement st = con.createStatement();
                 String sql = "INSERT INTO CUSTOMER (CUSTOMER_ID, ACCOUNT_ID, FIRST_NAME, LAST_NAME, ADDRESS, PHONE_NUMBER, AGE, EMAIL) VALUES (?,?,?,?,?,?,?,?)";
 
@@ -121,7 +136,7 @@ public class Manager {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
-                        "moza", "10059715");
+                        "username", "password");
                 Statement st = con.createStatement();
                 String sql = "DELETE FROM Customer WHERE Customer_ID = ?";
 
@@ -169,7 +184,7 @@ public class Manager {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
-                        "moza", "10059715");
+                        "username", "password");
                 Statement st = con.createStatement();
                 String sql = "INSERT INTO Accounts(Account_ID, Branch_ID, Account_Type, Balance, Rate, Status) VALUES (?,?,?,?,?,?)";
 
@@ -205,7 +220,7 @@ public class Manager {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
-                        "moza", "10059715");
+                        "username", "password");
                 Statement st = con.createStatement();
                 String sql = "DELETE FROM Accounts WHERE Account_ID = ?";
 
@@ -213,7 +228,7 @@ public class Manager {
                 preparedStmt.setInt(1, aID);
 
                 preparedStmt.execute();
-                System.out.println("\n **** Account ID " + aID + " successfully added. ****");
+                System.out.println("\n **** Account ID " + aID + " successfully deleted. ****");
                 con.close();
 
                 b = false;
@@ -228,6 +243,54 @@ public class Manager {
     // If transaction = null output all transaction
     // If transaction != null, show only transaction with specific transactionID
     public void viewTransactions() {
+        boolean b = true;
+        while (b) {
+            System.out.print("\nTo view a Transaction enter the Transaction ID or enter 0 to see all Transactions ");
+            System.out.print("\n > Transaction ID (5 digits): ");
+            int tID = input.nextInt();
+            if (tID == 0) {
+                try {
+                    Class.forName("oracle.jdbc.OracleDriver");
+                    Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
+                            "username", "password");
+                    Statement st = con.createStatement();
+                    String sql = "SELECT * FROM Transactions ";
 
+                    ResultSet rs = st.executeQuery(sql);
+                    while (rs.next()) {
+                        System.out.println(rs.getInt("Transaction_ID") + " " + rs.getInt("Account_ID_S") + " " + rs.getInt("Account_ID_R") + " " + rs.getDate("Transaction_TimeStamp")
+                                + " " + rs.getInt("Loan_ID") + " " + rs.getString("Transaction_Name") + "" + rs.getInt("Manager_ID") + " " + rs.getString("Credit_Debit") + " " + rs.getDouble("Amount"));
+                    }
+                    con.close();
+
+                    b = false;
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            } else {
+                try {
+                    Class.forName("oracle.jdbc.OracleDriver");
+                    Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
+                            "username", "password");
+                    Statement st = con.createStatement();
+                    String sql = "SELECT * FROM Transactions WHERE Transaction_ID = " + tID;
+
+                    ResultSet rs = st.executeQuery(sql);
+                    while (rs.next()) {
+                        System.out.println(rs.getInt("Transaction_ID") + " " + rs.getInt("Account_ID_S") + " " + rs.getInt("Account_ID_R") + " " + rs.getDate("Transaction_TimeStamp") + " " + rs.getTime("Transaction_TimeStamp")
+                                + " " + rs.getInt("Loan_ID") + " " + rs.getString("Transaction_Name") + "" + rs.getInt("Manager_ID") + " " + rs.getString("Credit_Debit") + " " + rs.getFloat("Amount"));
+                    }
+                    con.close();
+
+                    b = false;
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+
+        }
+        //Goes back to main menu
+        Prompts();
     }
+
 }
