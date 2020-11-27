@@ -10,16 +10,11 @@ class Main {
             System.out.print("*       Welcome to GBO DBMS!     *\n");
             System.out.print("**********************************\n");
             System.out.print("Select an option from below: \n [1] Manager \n [2] Customer \n [0] Quit \n");
-            System.out.print("My choice: ");
+            System.out.print("> My choice: ");
             int choice = input.nextInt();
 
             if (choice == 1) {           
                 Manager m = new Manager();
-                
-                
-                
-                
-                
             } else if (choice == 2) {
 
             } else if (choice == 0) {
