@@ -17,6 +17,7 @@ import java.sql.*;
                 try {
                     Class.forName("oracle.jdbc.driver.OracleDriver");
                     Connection con =  DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl", "rmjoshi", "03248329");
+
                     Statement st = con.createStatement();
                     String sql = "SELECT * FROM Accounts";
                     ResultSet rs = st.executeQuery(sql);
