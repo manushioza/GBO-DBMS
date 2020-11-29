@@ -1,7 +1,8 @@
+
 import java.util.Scanner;
-import java.sql.*;
 
 class Main {
+
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         boolean run = true;
@@ -13,19 +14,17 @@ class Main {
             System.out.print("> My choice: ");
             int choice = input.nextInt();
 
-            if (choice == 1) {           
+            if (choice == 1) {
                 Manager m = new Manager();
             } else if (choice == 2) {
+                Customer c = new Customer();
 
             } else if (choice == 0) {
                 run = false;
             } else {
-                System.out.print("Incorrect option, please try again.");
+                System.out.print("\nIncorrect option, please try again.\n");
             }
         }
         input.close();
     }
-
-   
- 
 }

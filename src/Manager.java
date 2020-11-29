@@ -41,7 +41,7 @@ public class Manager {
 
 //Displays Manager options
     public void Prompts() {
-        System.out.print("\nSelect an option from below: \n [1] Add Customer(please add an account before you do this) \n [2] Delete Customer \n [3] Add Account \n [4] Delete Account Customer \n [5] View Transactions Customer \n [0] Quit \n");
+        System.out.print("\nSelect an option from below: \n [1] Add Customer(please add an account before you do this) \n [2] Delete Customer \n [3] Add Account \n [4] Delete Account (please remove corresponding customer before you perform this action) \n [5] View Transactions Customer \n [0] Quit \n");
         System.out.print(" > My Choice: ");
         int choice = input.nextInt();
 
@@ -60,7 +60,8 @@ public class Manager {
             case 0:
                 System.exit(0);
             default:
-                System.out.print("\n > Please enter a vaild a choice: ");
+                System.out.print("\nPlease enter a vaild a choice.\n");
+                Prompts();
         }
     }
 
@@ -68,7 +69,7 @@ public class Manager {
     public void addCustomer() {
         boolean b = true;
         while (b) {
-            System.out.println("\nTo add a customer input the following information:");
+            System.out.println("\nTo add a customer input the following information (please remember to follow the proper data entry guidelines in brackets):");
             System.out.print(" > Customer ID (5 digits): ");
             int cID = input.nextInt();
 
@@ -113,7 +114,7 @@ public class Manager {
                 preparedStmt.setString(8, email);
 
                 preparedStmt.execute();
-                System.out.println("**** Cusomter " + cID + " successfully added. **** ");
+                System.out.println("**** Customer " + cID + " successfully added. **** ");
                 con.close();
 
                 b = false;
