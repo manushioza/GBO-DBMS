@@ -111,7 +111,7 @@ public class Admin {
     }
 
     public void populateTables() {
-
+        Prompts();
     }
 
     public void dropTables() {
@@ -157,8 +157,9 @@ public class Admin {
             con.close();
 
         } catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
         }
-
+        Prompts();
     }
+
 }
