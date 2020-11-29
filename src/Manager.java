@@ -11,7 +11,11 @@ import java.util.Scanner;
 
 public class Manager {
 
-    // Declare Manager ID
+    //Change this before running project
+    private String username = "moza";
+    private String password = "10059715";
+
+// Declare Manager ID
     private static int managerID;
     Scanner input = new Scanner(System.in);
     ArrayList<Integer> managerIDs = new ArrayList<Integer>();
@@ -99,7 +103,7 @@ public class Manager {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
-                        "username", "password");
+                        username, password);
                 Statement st = con.createStatement();
                 String sql = "INSERT INTO CUSTOMER (CUSTOMER_ID, ACCOUNT_ID, FIRST_NAME, LAST_NAME, ADDRESS, PHONE_NUMBER, AGE, EMAIL) VALUES (?,?,?,?,?,?,?,?)";
 
@@ -137,7 +141,7 @@ public class Manager {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
-                        "username", "password");
+                        username, password);
                 Statement st = con.createStatement();
                 String sql = "DELETE FROM Customer WHERE Customer_ID = ?";
 
@@ -185,7 +189,7 @@ public class Manager {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
-                        "username", "password");
+                        username, password);
                 Statement st = con.createStatement();
                 String sql = "INSERT INTO Accounts(Account_ID, Branch_ID, Account_Type, Balance, Rate, Status) VALUES (?,?,?,?,?,?)";
 
@@ -221,7 +225,7 @@ public class Manager {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
-                        "username", "password");
+                        username, password);
                 Statement st = con.createStatement();
                 String sql = "DELETE FROM Accounts WHERE Account_ID = ?";
 
@@ -253,7 +257,7 @@ public class Manager {
                 try {
                     Class.forName("oracle.jdbc.OracleDriver");
                     Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
-                            "username", "password");
+                            username, password);
                     Statement st = con.createStatement();
                     String sql = "SELECT * FROM Transactions ";
 
@@ -272,7 +276,7 @@ public class Manager {
                 try {
                     Class.forName("oracle.jdbc.OracleDriver");
                     Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
-                            "username", "password");
+                            username, password);
                     Statement st = con.createStatement();
                     String sql = "SELECT * FROM Transactions WHERE Transaction_ID = " + tID;
 
