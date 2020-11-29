@@ -34,7 +34,7 @@ public class Admin {
     }
 
     public void Prompts() {
-        System.out.print("\nSelect an option from below: \n [1] Create Tables  [2] Populate Tables \n [3] Drop Tables  \n [0] Quit \n");
+        System.out.print("\nSelect an option from below: \n [1] Create Tables \n [2] Populate Tables \n [3] Drop Tables  \n [0] Quit \n");
         System.out.print(" > My Choice: ");
         int choice = input.nextInt();
 
@@ -105,8 +105,9 @@ public class Admin {
             con.close();
 
         } catch (Exception e) {
-            System.out.println(e);
+
         }
+        Prompts();
     }
 
     public void populateTables() {
@@ -119,20 +120,38 @@ public class Admin {
             Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
                     username, password);
             Statement st = con.createStatement();
-            String sql = "DROP TABLE Transactions PURGE"
-                    + "DROP TABLE Loans PURGE"
-                    + "DROP TABLE TransactionType PURGE"
-                    + "Drop TABLE BranchManager PURGE"
-                    + "DROP TABLE BankTeller PURGE"
-                    + "DROP TABLE Employee PURGE"
-                    + "DROP TABLE Customer PURGE"
-                    + "DROP TABLE Accounts PURGE"
-                    + "DROP TABLE BankBranch PURGE"
-                    + "DROP TABLE Bank PURGE";
+            String sql1 = "DROP TABLE Transactions PURGE";
+            String sql2 = "DROP TABLE Loans PURGE";
+            String sql3 = "DROP TABLE TransactionType PURGE";
+            String sql4 = "Drop TABLE BranchManager PURGE";
+            String sql5 = "DROP TABLE BankTeller PURGE";
+            String sql6 = "DROP TABLE Employee PURGE";
+            String sql7 = "DROP TABLE Customer PURGE";
+            String sql8 = "DROP TABLE Accounts PURGE";
+            String sql9 = "DROP TABLE BankBranch PURGE";
+            String sql10 = "DROP TABLE Bank PURGE";
 
-            PreparedStatement preparedStmt = con.prepareStatement(sql);
+            PreparedStatement preparedStmt1 = con.prepareStatement(sql1);
+            PreparedStatement preparedStmt2 = con.prepareStatement(sql2);
+            PreparedStatement preparedStmt3 = con.prepareStatement(sql3);
+            PreparedStatement preparedStmt4 = con.prepareStatement(sql4);
+            PreparedStatement preparedStmt5 = con.prepareStatement(sql5);
+            PreparedStatement preparedStmt6 = con.prepareStatement(sql6);
+            PreparedStatement preparedStmt7 = con.prepareStatement(sql7);
+            PreparedStatement preparedStmt8 = con.prepareStatement(sql8);
+            PreparedStatement preparedStmt9 = con.prepareStatement(sql9);
+            PreparedStatement preparedStmt10 = con.prepareStatement(sql10);
 
-            preparedStmt.execute();
+            preparedStmt1.execute();
+            preparedStmt2.execute();
+            preparedStmt3.execute();
+            preparedStmt4.execute();
+            preparedStmt5.execute();
+            preparedStmt6.execute();
+            preparedStmt7.execute();
+            preparedStmt8.execute();
+            preparedStmt9.execute();
+            preparedStmt10.execute();
 
             System.out.println("Tables Successfully Dropped ");
             con.close();

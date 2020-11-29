@@ -12,8 +12,8 @@ import java.util.Scanner;
 public class Manager {
 
     //Change this before running project
-    private final String username = "username";
-    private final String password = "password";
+    private final String username = "moza";
+    private final String password = "10059715";
 
 // Declare Manager ID
     private static int managerID;
@@ -64,7 +64,7 @@ public class Manager {
             case 0:
                 System.exit(0);
             default:
-                System.out.print("\nPlease enter a vaild a choice.\n");
+                System.out.print("\nIncorrect Customer ID. Please try again.\n");
                 Prompts();
         }
     }
