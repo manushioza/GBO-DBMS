@@ -11,6 +11,10 @@ import java.util.Scanner;
 
 public class Customer {
 
+    //Change this before running project
+    private final String username = "username";
+    private final String password = "password";
+
     private static int customerID;
     Scanner input = new Scanner(System.in);
     ArrayList<Integer> customerIDs = new ArrayList<Integer>();
@@ -84,7 +88,7 @@ public class Customer {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
-                        "username", "password");
+                        username, password);
                 Statement st = con.createStatement();
 
                 String sql = "UPDATE ACCOUNTS"
@@ -129,7 +133,7 @@ public class Customer {
             try {
                 Class.forName("oracle.jdbc.OracleDriver");
                 Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
-                        "username", "password");
+                        username, password);
                 Statement st = con.createStatement();
                 String sql = "UPDATE LOANS"
                         + " SET AMOUNT = AMOUNT - ? "
