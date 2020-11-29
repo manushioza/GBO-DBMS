@@ -12,8 +12,8 @@ import java.util.Scanner;
 public class Manager {
 
     //Change this before running project
-    private final String username = "moza";
-    private final String password = "10059715";
+    private final String username = "username";
+    private final String password = "password";
 
 // Declare Manager ID
     private static int managerID;

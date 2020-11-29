@@ -8,8 +8,8 @@ import java.util.Scanner;
 public class Admin {
 
     //Change this before running project
-    private final String username = "moza";
-    private final String password = "10059715";
+    private final String username = "username";
+    private final String password = "password";
 
     Scanner input = new Scanner(System.in);
 
