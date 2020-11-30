@@ -75,7 +75,7 @@ public class Customer {
         boolean b = true;
         while (b) {
             System.out.print("\nTo transfer money");
-            System.out.print("\n > Account ID of the account you want to transfer to (5 digits): ");
+            System.out.print("\n > Account ID of the account you want to transfer money to (5 digits): ");
             int aID = input.nextInt();
             if (!accountIDs.contains(aID)) {
                 System.out.print("\nIncorrect Account ID. Please try again.\n");
@@ -100,7 +100,7 @@ public class Customer {
                 PreparedStatement ps = con.prepareStatement(sql);
                 ps.setDouble(1, moneyTransfer);
                 ps.setInt(2, aID);
-                System.out.println("Amount $" + moneyTransfer + " successfully added to Account ID  " + aID);
+                System.out.println(" **** Amount $" + moneyTransfer + " successfully added to Account ID  " + aID + "  **** ");
                 ps.execute();
                 con.close();
                 b = false;
@@ -120,17 +120,17 @@ public class Customer {
 
         boolean b = true;
         while (b) {
-            System.out.print("\nTo To pay the loan enter:");
-            System.out.print(" > Loan ID (5 digits): ");
+            System.out.print("\n To pay a Loan enter:");
+            System.out.print("\n > Loan ID (5 digits): ");
             int lID = input.nextInt();
-            if (!accountIDs.contains(lID)) {
+            if (!loanIDs.contains(lID)) {
                 System.out.print("\nIncorrect Loan ID. Please try again.\n");
                 Prompts();
             } else {
                 b = false;
             }
 
-            System.out.print("\n Loan Amount (without $): ");
+            System.out.print(" > Loan Amount (without $): ");
             double payLoan = input.nextDouble();
 
             try {
@@ -143,11 +143,11 @@ public class Customer {
                         + "WHERE LOAN_ID = ?";
 
                 PreparedStatement prepStmt = con.prepareStatement(sql);
-                prepStmt.setInt(1, lID);
-                prepStmt.setDouble(2, payLoan);
+                prepStmt.setDouble(1, payLoan);
+                prepStmt.setInt(2, lID);
                 prepStmt.execute();
 
-                System.out.println("Amount $" + payLoan + " successfully paid towards Loan ID " + lID);
+                System.out.println(" **** Amount $" + payLoan + " successfully paid towards Loan ID " + lID + "  **** ");
                 con.close();
 
                 b = false;
