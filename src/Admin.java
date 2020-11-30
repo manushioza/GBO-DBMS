@@ -17,8 +17,8 @@ import java.util.Scanner;
 public class Admin {
 
     //Change this before running project
-    private final String username = "rmjoshi";
-    private final String password = "03248329";
+    private final String username = "moza";
+    private final String password = "10059715";
 
     Scanner input = new Scanner(System.in);
 
@@ -69,23 +69,67 @@ public class Admin {
             Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",
                     username, password);
             Statement st = con.createStatement();
-            String sql1 = "CREATE TABLE BANK(Bank_ID NUMBER (5) PRIMARY KEY,Bank_Name VARCHAR(50),Address VARCHAR(200))";
-            String sql2 = "CREATE TABLE BankBranch(Branch_ID NUMBER(5) PRIMARY KEY,Bank_ID NUMBER(5) REFERENCES Bank(Bank_ID),Branch_Name VARCHAR(30),"
-                    + "Branch_City VARCHAR(30), Address VARCHAR2(200),Phone_Number VARCHAR(15))";
-            String sql3 = "CREATE TABLE Accounts(Account_ID NUMBER(5) PRIMARY KEY,Branch_ID NUMBER(5) References BankBranch(Branch_ID), Account_Type VARCHAR(8),"
-                    + "Balance FLOAT(15),Rate FLOAT(4),Status VARCHAR(20))";
-            String sql4 = "CREATE TABLE Customer(Customer_ID NUMBER(5) PRIMARY KEY,Account_ID  NUMBER(5) References Accounts(Account_ID), First_Name VARCHAR(50),"
-                    + "Last_Name VARCHAR(50),Address  VARCHAR(200), Phone_Number VARCHAR(15), Age NUMBER(3),Email VARCHAR(200))";
-            String sql5 = "CREATE TABLE Employee(Employee_ID NUMBER(5) PRIMARY KEY,Branch_ID NUMBER(5) REFERENCES BankBranch(Branch_ID), First_Name VARCHAR2(50),"
-                    + "Last_Name VARCHAR2(50),Phone_Number VARCHAR(15),Address VARCHAR2(200),Salary FLOAT(8),Emp_City VARCHAR(20))";
-            String sql6 = "CREATE TABLE BankTeller (Teller_ID NUMBER(5) PRIMARY KEY,Employee_ID NUMBER(5) REFERENCES Employee(Employee_ID))";
-            String sql7 = "CREATE TABLE BranchManager (Manager_ID NUMBER(5) PRIMARY KEY,Employee_ID NUMBER(5) REFERENCES Employee(Employee_ID),"
-                    + " Teller_ID Number(5) REFERENCES BankTeller(Teller_ID))";
+            String sql1 = "CREATE TABLE BANK("
+                    + "Bank_ID NUMBER (5) PRIMARY KEY,"
+                    + "Bank_Name VARCHAR(50),"
+                    + "Address VARCHAR(200))";
+            String sql2 = "CREATE TABLE BankBranch("
+                    + "Branch_ID NUMBER(5) PRIMARY KEY,"
+                    + "Bank_ID NUMBER(5) REFERENCES Bank(Bank_ID),"
+                    + "Branch_Name VARCHAR(30),"
+                    + "Branch_City VARCHAR(30), "
+                    + "Address VARCHAR2(200),"
+                    + "Phone_Number VARCHAR(15))";
+            String sql3 = "CREATE TABLE Accounts("
+                    + "Account_ID NUMBER(5) PRIMARY KEY,"
+                    + "Branch_ID NUMBER(5) References BankBranch(Branch_ID), "
+                    + "Account_Type VARCHAR(8),"
+                    + "Balance FLOAT(15),"
+                    + "Rate FLOAT(4),"
+                    + "Status VARCHAR(20))";
+            String sql4 = "CREATE TABLE Customer("
+                    + "Customer_ID NUMBER(5) PRIMARY KEY,"
+                    + "Account_ID  NUMBER(5) References Accounts(Account_ID),"
+                    + "First_Name VARCHAR(50),"
+                    + "Last_Name VARCHAR(50),"
+                    + "Address  VARCHAR(200),"
+                    + "Phone_Number VARCHAR(15), "
+                    + "Age NUMBER(3),"
+                    + "Email VARCHAR(200))";
+            String sql5 = "CREATE TABLE Employee("
+                    + "Employee_ID NUMBER(5) PRIMARY KEY,"
+                    + "Branch_ID NUMBER(5) REFERENCES BankBranch(Branch_ID), "
+                    + "First_Name VARCHAR2(50),"
+                    + "Last_Name VARCHAR2(50),"
+                    + "Phone_Number VARCHAR(15),"
+                    + "Address VARCHAR2(200),"
+                    + "Salary FLOAT(8),"
+                    + "Emp_City VARCHAR(20))";
+            String sql6 = "CREATE TABLE BankTeller ("
+                    + "Teller_ID NUMBER(5) PRIMARY KEY,"
+                    + "Employee_ID NUMBER(5) REFERENCES Employee(Employee_ID))";
+            String sql7 = "CREATE TABLE BranchManager ("
+                    + "Manager_ID NUMBER(5) PRIMARY KEY,"
+                    + "Employee_ID NUMBER(5) REFERENCES Employee(Employee_ID),"
+                    + "Teller_ID Number(5) REFERENCES BankTeller(Teller_ID))";
             String sql8 = "CREATE TABLE Loans(Loan_ID NUMBER(5) Primary Key, Duration_Yr NUMBER(3),Interest_Rate FLOAT(4), Start_Date DATE,Loan_Type VARCHAR(100),"
                     + "Amount FLOAT(7),Loan_TimeStamp  TIMESTAMP WITH LOCAL TIME ZONE)";
-            String sql9 = "CREATE TABLE TransactionType(Transaction_Type VARCHAR(10),Transaction_Name VARCHAR2(25) Primary Key,Transaction_Description  VARCHAR(300))";
-            String sql10 = "CREATE TABLE Transactions(Transaction_ID  NUMBER(5),Account_ID_S  NUMBER(5),Account_ID_R  NUMBER(5),Transaction_TimeStamp TIMESTAMP WITH LOCAL TIME ZONE,\n"
-                    + "Loan_ID  NUMBER(5),Transaction_Name  CHAR(10),Manager_ID  NUMBER(5),Credit_Debit  CHAR(6),Amount FLOAT(15),PRIMARY KEY (Transaction_ID,  Transaction_Name , Loan_ID)\n"
+            String sql9 = "CREATE TABLE TransactionType("
+                    + "Transaction_Type VARCHAR(10),"
+                    + "Transaction_Name VARCHAR2(25) Primary Key,"
+                    + "Transaction_Description  VARCHAR(300))";
+            String sql10 = "CREATE TABLE Transactions("
+                    + "Transaction_ID  NUMBER(5),"
+                    + "Account_ID_S  NUMBER(5),"
+                    + "Account_ID_R  NUMBER(5),"
+                    + "Transaction_TimeStamp TIMESTAMP WITH LOCAL TIME ZONE,"
+                    + "Loan_ID  NUMBER(5),"
+                    + "Transaction_Name  CHAR(10),"
+                    + "Manager_ID  NUMBER(5),"
+                    + "Credit_Debit  CHAR(6),"
+                    + "Amount FLOAT(15),"
+                    + "PRIMARY KEY (Transaction_ID,  Transaction_Name ,"
+                    + "Loan_ID)"
                     + ")";
 
             PreparedStatement preparedStmt1 = con.prepareStatement(sql1);
@@ -123,27 +167,52 @@ public class Admin {
     public void populateTables() {
         try {
             Class.forName("oracle.jdbc.OracleDriver");
-            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl",username, password);
+            Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle.scs.ryerson.ca:1521:orcl", username, password);
             Statement st = con.createStatement();
+
+            // BRANCH -> 1
             String sql1 = "INSERT INTO BANK(Bank_ID,Bank_Name, Address) VALUES(12930, 'Greater Bank of Ontario (GBO)', '755 Oxford Street, Ottawa, Ontario K1A 0J6')";
-            
-            String sql2 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number)"+
-                    " VALUES(12930, 12930, 'GBO Ottawa','Ottawa','3755 Oxford Street, Ottawa, Ontario K1A 0J6', '613-325-1129')";
-            String sql3 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number) "
+
+            PreparedStatement preparedStmt1 = con.prepareStatement(sql1);
+            preparedStmt1.execute();
+
+            //BRANK BRANCH -> 2 - 9
+            String sql2 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number)"
+                    + "VALUES(12930, 12930, 'GBO Ottawa','Ottawa','3755 Oxford Street, Ottawa, Ontario K1A 0J6', '613-325-1129')";
+            String sql3 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number)"
                     + "VALUES(12931, 12930, 'GBO Toronto','Toronto','438 Conway St Toronto, Ontario(ON), M2N 2G8','416-333-1212')";
-            String sql4 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number)"
+            String sql4 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number) "
                     + "VALUES(12932, 12930, 'GBO Barrie','Barrie', '25 Lovely Drive, Barrie, Ontario(ON), L4M 3B1','705-211-7337')";
             String sql5 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number) "
                     + "VALUES(12933, 12930, 'GBO Hamilton','Hamilton','1881 Charlie Ave, Hamilton, Ontario(ON), L8N 3X3','905-887-3443')";
-            String sql6 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number) "
+            String sql6 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number)"
                     + "VALUES(12934, 12930, 'GBO Missisagua','Missisaugua','3504 Crely Dr, Missisauga, Ontario(ON), N7T 7T9','905-381-2020')";
-            String sql7 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number) "
+            String sql7 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number)"
                     + "VALUES(12935, 12930, 'GBO Milton','Milton','3047 Takeoff Rd, Milton, Ontario(ON), L9T 1P4','905-340-8889')";
-            String sql8 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number) "
+            String sql8 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number)"
                     + "VALUES(12936, 12930, 'GBO Kingston','Kingston','4149 Jamison, Kingston, Ontario(ON), P0L 1N0','705-345-2020')";
-            String sql9 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number) "
-                    + "VALUES(12937, 12930, 'GBO London', 'London','722 Fairway Street, London, Ontario(ON), N0N 0N0','519-823-5968')"; 
-            
+            String sql9 = "INSERT INTO BankBranch(Branch_ID,Bank_ID,Branch_Name, Branch_City, Address,Phone_Number)"
+                    + "VALUES(12937, 12930, 'GBO London', 'London','722 Fairway Street, London, Ontario(ON), N0N 0N0','519-823-5968')";
+
+            PreparedStatement preparedStmt2 = con.prepareStatement(sql2);
+            PreparedStatement preparedStmt3 = con.prepareStatement(sql3);
+            PreparedStatement preparedStmt4 = con.prepareStatement(sql4);
+            PreparedStatement preparedStmt5 = con.prepareStatement(sql5);
+            PreparedStatement preparedStmt6 = con.prepareStatement(sql6);
+            PreparedStatement preparedStmt7 = con.prepareStatement(sql7);
+            PreparedStatement preparedStmt8 = con.prepareStatement(sql8);
+            PreparedStatement preparedStmt9 = con.prepareStatement(sql9);
+
+            preparedStmt2.execute();
+            preparedStmt3.execute();
+            preparedStmt4.execute();
+            preparedStmt5.execute();
+            preparedStmt6.execute();
+            preparedStmt7.execute();
+            preparedStmt8.execute();
+            preparedStmt9.execute();
+
+            //ACCOUNTS -> 10-58
             String sql10 = "INSERT INTO Accounts(Account_ID, Branch_ID, Account_Type, Balance, Rate, Status)"
                     + "VALUES(34929, 12932, 'Credit', 67575.63, 0.428, 'Active')";
             String sql11 = "INSERT INTO Accounts(Account_ID, Branch_ID, Account_Type, Balance, Rate, Status)"
@@ -242,45 +311,108 @@ public class Admin {
                     + "VALUES(36328, 12937, 'Loan', 30259.94, 0.492, 'Active')";
             String sql58 = "INSERT INTO Accounts(Account_ID, Branch_ID, Account_Type, Balance, Rate, Status)"
                     + "VALUES(42979, 12930, 'Loan', 65170.29, 0.285, 'Active')";
-            
-            
-            String sql59 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85230,76530)";
-            String sql60 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85330,14330)";
-            String sql61 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85530,85230)";
-            String sql62 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85630,66630)";
-            String sql63 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85731,09731)";
-            String sql64 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85831,23031)";
-            String sql65 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85932,20332)";
-            String sql66 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86032,59032)";
-            String sql67 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86133,05133)";
-            String sql68 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86234,40534)";
-            String sql69 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86334,92434)";
-            String sql70 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86435,56935)";
-            String sql71 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86536,06536)";
-            String sql72 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86636,90336)";
-            String sql73 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86737,15637)";
-            
-            String sql74 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45030,12330,85230))";
-            String sql75 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (85130,34530,85330)";
-            String sql76 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45131,84331,85731)";
-            String sql77 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45332,67432,85932)";
-            String sql78 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45433,83533,86032)";
-            String sql79 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (12933,98533,86133)";
-            String sql80 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45534,58934,86234)";
-            String sql81 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45635,63635,86435)";
-            String sql82 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45736,07736,86536)";
-            String sql83 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45837,29837,86737)";
-            
-            String sql84 = "INSERT INTO TRANSACTIONTYPE (TRANSACTION_TYPE, TRANSACTION_NAME, TRANSACTION_DESCRIPTION)"
-                    + "VALUES ('Credit','Withdraw','Withdraw Money out of a bank account')";
-            String sql85 = "INSERT INTO TRANSACTIONTYPE (TRANSACTION_TYPE, TRANSACTION_NAME, TRANSACTION_DESCRIPTION)"
-                    + "VALUES ('Debit','Deposit','Deposit Money into a bank account')";
-            String sql86 = "INSERT INTO TRANSACTIONTYPE (TRANSACTION_TYPE, TRANSACTION_NAME, TRANSACTION_DESCRIPTION)"
-                    + "VALUES ('Debit','Send','Send money to an account')";
-            String sql87 = "INSERT INTO TRANSACTIONTYPE (TRANSACTION_TYPE, TRANSACTION_NAME, TRANSACTION_DESCRIPTION)"
-                    + "VALUES ('Credit','Pay Bills','Pay credit card bills')";
-            
-            /////////////////////////// CUSTOMER //////////////////////////////////////////////////
+
+            PreparedStatement preparedStmt10 = con.prepareStatement(sql10);
+            PreparedStatement preparedStmt11 = con.prepareStatement(sql11);
+            PreparedStatement preparedStmt12 = con.prepareStatement(sql12);
+            PreparedStatement preparedStmt13 = con.prepareStatement(sql13);
+            PreparedStatement preparedStmt14 = con.prepareStatement(sql14);
+            PreparedStatement preparedStmt15 = con.prepareStatement(sql15);
+            PreparedStatement preparedStmt16 = con.prepareStatement(sql16);
+            PreparedStatement preparedStmt17 = con.prepareStatement(sql17);
+            PreparedStatement preparedStmt18 = con.prepareStatement(sql18);
+            PreparedStatement preparedStmt19 = con.prepareStatement(sql19);
+            PreparedStatement preparedStmt20 = con.prepareStatement(sql20);
+            PreparedStatement preparedStmt21 = con.prepareStatement(sql21);
+            PreparedStatement preparedStmt22 = con.prepareStatement(sql22);
+            PreparedStatement preparedStmt23 = con.prepareStatement(sql23);
+            PreparedStatement preparedStmt24 = con.prepareStatement(sql24);
+            PreparedStatement preparedStmt25 = con.prepareStatement(sql25);
+            PreparedStatement preparedStmt26 = con.prepareStatement(sql26);
+            PreparedStatement preparedStmt27 = con.prepareStatement(sql27);
+            PreparedStatement preparedStmt28 = con.prepareStatement(sql28);
+            PreparedStatement preparedStmt29 = con.prepareStatement(sql29);
+            PreparedStatement preparedStmt30 = con.prepareStatement(sql30);
+            PreparedStatement preparedStmt31 = con.prepareStatement(sql31);
+            PreparedStatement preparedStmt32 = con.prepareStatement(sql32);
+            PreparedStatement preparedStmt33 = con.prepareStatement(sql33);
+            PreparedStatement preparedStmt34 = con.prepareStatement(sql34);
+            PreparedStatement preparedStmt35 = con.prepareStatement(sql35);
+            PreparedStatement preparedStmt36 = con.prepareStatement(sql36);
+            PreparedStatement preparedStmt37 = con.prepareStatement(sql37);
+            PreparedStatement preparedStmt38 = con.prepareStatement(sql38);
+            PreparedStatement preparedStmt39 = con.prepareStatement(sql39);
+            PreparedStatement preparedStmt40 = con.prepareStatement(sql40);
+            PreparedStatement preparedStmt41 = con.prepareStatement(sql41);
+            PreparedStatement preparedStmt42 = con.prepareStatement(sql42);
+            PreparedStatement preparedStmt43 = con.prepareStatement(sql43);
+            PreparedStatement preparedStmt44 = con.prepareStatement(sql44);
+            PreparedStatement preparedStmt45 = con.prepareStatement(sql45);
+            PreparedStatement preparedStmt46 = con.prepareStatement(sql46);
+            PreparedStatement preparedStmt47 = con.prepareStatement(sql47);
+            PreparedStatement preparedStmt48 = con.prepareStatement(sql48);
+            PreparedStatement preparedStmt49 = con.prepareStatement(sql49);
+            PreparedStatement preparedStmt50 = con.prepareStatement(sql50);
+            PreparedStatement preparedStmt51 = con.prepareStatement(sql51);
+            PreparedStatement preparedStmt52 = con.prepareStatement(sql52);
+            PreparedStatement preparedStmt53 = con.prepareStatement(sql53);
+            PreparedStatement preparedStmt54 = con.prepareStatement(sql54);
+            PreparedStatement preparedStmt55 = con.prepareStatement(sql55);
+            PreparedStatement preparedStmt56 = con.prepareStatement(sql56);
+            PreparedStatement preparedStmt57 = con.prepareStatement(sql57);
+            PreparedStatement preparedStmt58 = con.prepareStatement(sql58);
+
+            preparedStmt10.execute();
+            preparedStmt11.execute();
+            preparedStmt12.execute();
+            preparedStmt13.execute();
+            preparedStmt14.execute();
+            preparedStmt15.execute();
+            preparedStmt16.execute();
+            preparedStmt17.execute();
+            preparedStmt18.execute();
+            preparedStmt19.execute();
+            preparedStmt20.execute();
+            preparedStmt21.execute();
+            preparedStmt22.execute();
+            preparedStmt23.execute();
+            preparedStmt24.execute();
+            preparedStmt25.execute();
+            preparedStmt26.execute();
+            preparedStmt27.execute();
+            preparedStmt28.execute();
+            preparedStmt29.execute();
+            preparedStmt30.execute();
+            preparedStmt31.execute();
+            preparedStmt32.execute();
+            preparedStmt33.execute();
+            preparedStmt34.execute();
+            preparedStmt35.execute();
+            preparedStmt36.execute();
+            preparedStmt37.execute();
+            preparedStmt38.execute();
+            preparedStmt39.execute();
+            preparedStmt40.execute();
+            preparedStmt41.execute();
+            preparedStmt42.execute();
+            preparedStmt43.execute();
+            preparedStmt44.execute();
+            preparedStmt45.execute();
+            preparedStmt46.execute();
+            preparedStmt47.execute();
+            preparedStmt48.execute();
+            preparedStmt49.execute();
+            preparedStmt50.execute();
+            preparedStmt51.execute();
+            preparedStmt52.execute();
+            preparedStmt53.execute();
+            preparedStmt54.execute();
+            preparedStmt55.execute();
+            preparedStmt56.execute();
+            preparedStmt57.execute();
+            preparedStmt58.execute();
+
+            //CUSTOMER -> 88 - 137
             String sql88 = "INSERT INTO CUSTOMER (CUSTOMER_ID, ACCOUNT_ID, FIRST_NAME, LAST_NAME, ADDRESS, PHONE_NUMBER, AGE, EMAIL)"
                     + "VALUES (82090,17668,'Ellis','Whitaker','1795 Wellington Street, Toronto, Ontario(ON), M9C 3J5','416-394-4244',17,'ewhitaker20@gmail.com')";
             String sql89 = "INSERT INTO CUSTOMER (CUSTOMER_ID, ACCOUNT_ID, FIRST_NAME, LAST_NAME, ADDRESS, PHONE_NUMBER, AGE, EMAIL)"
@@ -313,7 +445,7 @@ public class Admin {
                     + "VALUES (19287,93018,'Terrence','Archer','3504 Scotchmere Dr, Missisauga, Ontario(ON), N7T 7T9','519-381-2015',45,'terryt@hotmail.com')";
             String sql103 = "INSERT INTO CUSTOMER (CUSTOMER_ID, ACCOUNT_ID, FIRST_NAME, LAST_NAME, ADDRESS, PHONE_NUMBER, AGE, EMAIL)"
                     + "VALUES (81858,85789,'Gerard','Ellison','3253 Lynden Road, Kingston, Ontario(ON), L0G 1N0','905-859-2334',52,'gerrardelli@outlook.com')";
-            
+
             String sql104 = "INSERT INTO CUSTOMER (CUSTOMER_ID, ACCOUNT_ID, FIRST_NAME, LAST_NAME, ADDRESS, PHONE_NUMBER, AGE, EMAIL)"
                     + "VALUES (69084,81797,'Normand','Daniel','1825 Ross Street, Kingston, Ontario(ON), K7L 4V4','613-532-7396',44,'normyd@hello.com')";
             String sql105 = "INSERT INTO CUSTOMER (CUSTOMER_ID, ACCOUNT_ID, FIRST_NAME, LAST_NAME, ADDRESS, PHONE_NUMBER, AGE, EMAIL)"
@@ -338,7 +470,7 @@ public class Admin {
                     + "VALUES (76821,10736,'Kristina','Leblanc','4474 Charing Cross Rd, Ottawa, Ontario(ON), N7M 2G9','519-351-9206',69,'leblanckk@gmail.com')";
             String sql115 = "INSERT INTO CUSTOMER (CUSTOMER_ID, ACCOUNT_ID, FIRST_NAME, LAST_NAME, ADDRESS, PHONE_NUMBER, AGE, EMAIL)"
                     + "VALUES (99623,75639,'Verna','Hurst','2917 MacLaren Street, Ottawa, Ontario(ON), K1P 5M7','613-940-7429',45,'vernahurst@yahoo.com')";
-            
+
             String sql116 = "INSERT INTO CUSTOMER (CUSTOMER_ID, ACCOUNT_ID, FIRST_NAME, LAST_NAME, ADDRESS, PHONE_NUMBER, AGE, EMAIL)"
                     + "VALUES (98292,87672,'Foster','Horton','4618 Dufferin Street, Toronto, Ontario(ON), M6H 4B6','416-588-3379',43,'hortonfoster3232@outlook.com')";
             String sql117 = "INSERT INTO CUSTOMER (CUSTOMER_ID, ACCOUNT_ID, FIRST_NAME, LAST_NAME, ADDRESS, PHONE_NUMBER, AGE, EMAIL)"
@@ -381,164 +513,7 @@ public class Admin {
                     + "VALUES (18027,36766,'Orlando','Sandoval','455 Orfus Rd, Milton, Ontario(ON), L9T 1P4','905-864-7799',56,'notbloom@info.com')";
             String sql136 = "INSERT INTO CUSTOMER (CUSTOMER_ID, ACCOUNT_ID, FIRST_NAME, LAST_NAME, ADDRESS, PHONE_NUMBER, AGE, EMAIL)"
                     + "VALUES (37694,42979,'Kimberley','Goodwin','4651 Smith Avenue, Hamilton, Ontario(ON), L9H 1E6','905-515-4951',46,'kimberly.g@aol.com')";
-            String sql137 = "INSERT INTO CUSTOMER (CUSTOMER_ID, ACCOUNT_ID, FIRST_NAME, LAST_NAME, ADDRESS, PHONE_NUMBER, AGE, EMAIL)"
-                    + "VALUES (36303,24749,'Ginger','Leonard','4651 Smith Avenue, Hamilton, Ontario(ON), L9H 1E6','519-873-5968',46,'kimberly.g@aol.com')";
-            
-            //////////////////////EMPLOYEE////////////////////////////////////
-            String sql138 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (12330,12930,'Artemisios','Andreasson','613-409-5429','397 McDonald Street, Ottawa, Ontario(ON), K1R 3X7',80000,'Ottawa')";
-            String sql139 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (14330,12930,'Heike','Jennings','613-409-5430','397 McDonald Street, Ottawa, Ontario(ON), K1R 3X7',50000,'Ottawa')";
-            String sql140 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (34530,12930,'Alekto','Okafor','613-409-5431','397 McDonald Street, Ottawa, Ontario(ON), K1R 3X7',90000,'Ottawa')";
-            String sql141 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (66630,12930,'Amy','Foster','613-409-5432','397 McDonald Street, Ottawa, Ontario(ON), K1R 3X7',54000,'Ottawa')";
-            String sql142 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (76530,12930,'Arunas','MacRae','613-409-5433','397 McDonald Street, Ottawa, Ontario(ON), K1R 3X7',50100,'Ottawa')";
-            String sql143 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (85230,12930,'Damocles','Nielson','613-409-5434','397 McDonald Street, Ottawa, Ontario(ON), K1R 3X7',58950,'Ottawa')";
-            String sql144 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (23031,12931,'Eimhear','Roosevelt','416-388-6699','8790 Haley Avenue, Toronto, Ontario(ON), M1Q 2X7',52000,'Toronto')";
-            String sql145 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (49531,12931,'Jagannatha','Heinz','416-388-6700','8790 Haley Avenue, Toronto, Ontario(ON), M1Q 2X7',70000,'Toronto')";
-            String sql146 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (84331,12931,'Valens','Horn','416-388-6701','8790 Haley Avenue, Toronto, Ontario(ON), M1Q 2X7',87000,'Toronto')";
-            String sql147 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (9731,12931,'Eliott','Jewel','416-388-6702','8790 Haley Avenue, Toronto, Ontario(ON), M1Q 2X7',51300,'Toronto')";
-            String sql148 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (20332,12932,'Yechezkel','Ovesen','705-780-2919','66 Bayflor Drive,  Barrie, Ontario(ON), L8S 9C0',40000,'Barrie')";
-            String sql149 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (59032,12932,'Finlay','Ford','705-780-2920','66 Bayflor Drive,  Barrie, Ontario(ON), L8S 9C0',67000,'Barrie')";
-            String sql150 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (67432,12932,'Gemma','Samson','705-780-2921','66 Bayflor Drive,  Barrie, Ontario(ON), L8S 9C0',76000,'Barrie')";
-            String sql151 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (83533,12933,'Sari','Robert','905-555-5151','441 Smithson Avenue, Hamilton, Ontario(ON), L7N 1E6',85000,'Hamilton')";
-            String sql152 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (98533,12933,'Mikey','Garfield','905-555-5152','441 Smithson Avenue, Hamilton, Ontario(ON), L7N 1E6',83000,'Hamilton')";
-            String sql153 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (5133,12933,'Christiana','Farnham','905-555-5153','441 Smithson Avenue, Hamilton, Ontario(ON), L7N 1E6',60000,'Hamilton')";
-            String sql154 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (40534,12934,'Gavril','Alfero','905-311-7777','384 Eastside Road, Mississauga, Ontario(ON), L9A 2X9',45500,'Mississauga')";
-            String sql155 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (58934,12934,'Chrissie','Lockwood','905-311-7778','384 Eastside Road, Mississauga, Ontario(ON), L9A 2X9',93000,'Mississauga')";
-            String sql156 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (92434,12934,'Thurstan','Mayes','905-311-7779','384 Eastside Road, Mississauga, Ontario(ON), L9A 2X9',57800,'Mississauga')";
-            String sql157 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (56935,12935,'Lizzy','Ongaro','905-844-7909','932 Orange Rd, Milton, Ontario(ON), L0E 2V8',45700,'Milton')";
-            String sql158 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (63635,12935,'Thornton','Ness','905-844-7910','932 Orange Rd, Milton, Ontario(ON), L0E 2V8',88000,'Milton')";
-            String sql159 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (90336,12936,'Visnja','Simmon','613-888-5415','123 Prince St, Kingston, Ontario(ON), K9H 3Y4',67400,'Kingston')";
-            String sql160 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (6536,12936,'Aubrie','Dyson','613-888-5416','123 Prince St, Kingston, Ontario(ON), K9H 3Y4',53500,'Kingston')";
-            String sql161 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (7736,12936,'Abbey','Cooks','613-888-5417','123 Prince St, Kingston, Ontario(ON), K9H 3Y4',74000,'Kingston')";
-            String sql162 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (15637,12937,'John','Kaspersen','905-632-5097','230 Baxter Street,  London,  Ontario(ON), L2X 2Q1',45000,'London')";
-            String sql163 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
-                    + "VALUES (29837,12937,'Seyfullah','Lis','905-620-5180','459 Dolly Street,  London,  Ontario(ON), L8H 2V2',86000,'London')";
-            
-            
-            
-            
-            
 
-            PreparedStatement preparedStmt1 = con.prepareStatement(sql1);
-            PreparedStatement preparedStmt2 = con.prepareStatement(sql2);
-            PreparedStatement preparedStmt3 = con.prepareStatement(sql3);
-            PreparedStatement preparedStmt4 = con.prepareStatement(sql4);
-            PreparedStatement preparedStmt5 = con.prepareStatement(sql5);
-            PreparedStatement preparedStmt6 = con.prepareStatement(sql6);
-            PreparedStatement preparedStmt7 = con.prepareStatement(sql7);
-            PreparedStatement preparedStmt8 = con.prepareStatement(sql8);
-            PreparedStatement preparedStmt9 = con.prepareStatement(sql9);
-            PreparedStatement preparedStmt10 = con.prepareStatement(sql10);
-            
-            PreparedStatement preparedStmt11 = con.prepareStatement(sql11);
-            PreparedStatement preparedStmt12 = con.prepareStatement(sql12);
-            PreparedStatement preparedStmt13 = con.prepareStatement(sql13);
-            PreparedStatement preparedStmt14 = con.prepareStatement(sql14);
-            PreparedStatement preparedStmt15 = con.prepareStatement(sql15);
-            PreparedStatement preparedStmt16 = con.prepareStatement(sql16);
-            PreparedStatement preparedStmt17 = con.prepareStatement(sql17);
-            PreparedStatement preparedStmt18 = con.prepareStatement(sql18);
-            PreparedStatement preparedStmt19 = con.prepareStatement(sql19);
-            PreparedStatement preparedStmt20 = con.prepareStatement(sql20);
-            
-            PreparedStatement preparedStmt21 = con.prepareStatement(sql21);
-            PreparedStatement preparedStmt22 = con.prepareStatement(sql22);
-            PreparedStatement preparedStmt23 = con.prepareStatement(sql23);
-            PreparedStatement preparedStmt24 = con.prepareStatement(sql24);
-            PreparedStatement preparedStmt25 = con.prepareStatement(sql25);
-            PreparedStatement preparedStmt26 = con.prepareStatement(sql26);
-            PreparedStatement preparedStmt27 = con.prepareStatement(sql27);
-            PreparedStatement preparedStmt28 = con.prepareStatement(sql28);
-            PreparedStatement preparedStmt29 = con.prepareStatement(sql29);
-            PreparedStatement preparedStmt30 = con.prepareStatement(sql30);
-            
-            PreparedStatement preparedStmt31 = con.prepareStatement(sql31);
-            PreparedStatement preparedStmt32 = con.prepareStatement(sql32);
-            PreparedStatement preparedStmt33 = con.prepareStatement(sql33);
-            PreparedStatement preparedStmt34 = con.prepareStatement(sql34);
-            PreparedStatement preparedStmt35 = con.prepareStatement(sql35);
-            PreparedStatement preparedStmt36 = con.prepareStatement(sql36);
-            PreparedStatement preparedStmt37 = con.prepareStatement(sql37);
-            PreparedStatement preparedStmt38 = con.prepareStatement(sql38);
-            PreparedStatement preparedStmt39 = con.prepareStatement(sql39);
-            PreparedStatement preparedStmt40 = con.prepareStatement(sql40);
-            
-            PreparedStatement preparedStmt41 = con.prepareStatement(sql41);
-            PreparedStatement preparedStmt42 = con.prepareStatement(sql42);
-            PreparedStatement preparedStmt43 = con.prepareStatement(sql43);
-            PreparedStatement preparedStmt44 = con.prepareStatement(sql44);
-            PreparedStatement preparedStmt45 = con.prepareStatement(sql45);
-            PreparedStatement preparedStmt46 = con.prepareStatement(sql46);
-            PreparedStatement preparedStmt47 = con.prepareStatement(sql47);
-            PreparedStatement preparedStmt48 = con.prepareStatement(sql48);
-            PreparedStatement preparedStmt49 = con.prepareStatement(sql49);
-            PreparedStatement preparedStmt50 = con.prepareStatement(sql50);
-            
-            PreparedStatement preparedStmt51 = con.prepareStatement(sql51);
-            PreparedStatement preparedStmt52 = con.prepareStatement(sql52);
-            PreparedStatement preparedStmt53 = con.prepareStatement(sql53);
-            PreparedStatement preparedStmt54 = con.prepareStatement(sql54);
-            PreparedStatement preparedStmt55 = con.prepareStatement(sql55);
-            PreparedStatement preparedStmt56 = con.prepareStatement(sql56);
-            PreparedStatement preparedStmt57 = con.prepareStatement(sql57);
-            PreparedStatement preparedStmt58 = con.prepareStatement(sql58);
-            PreparedStatement preparedStmt59 = con.prepareStatement(sql59);
-            PreparedStatement preparedStmt60 = con.prepareStatement(sql60);
-            
-            PreparedStatement preparedStmt61 = con.prepareStatement(sql61);
-            PreparedStatement preparedStmt62 = con.prepareStatement(sql62);
-            PreparedStatement preparedStmt63 = con.prepareStatement(sql63);
-            PreparedStatement preparedStmt64 = con.prepareStatement(sql64);
-            PreparedStatement preparedStmt65 = con.prepareStatement(sql65);
-            PreparedStatement preparedStmt66 = con.prepareStatement(sql66);
-            PreparedStatement preparedStmt67 = con.prepareStatement(sql67);
-            PreparedStatement preparedStmt68 = con.prepareStatement(sql68);
-            PreparedStatement preparedStmt69 = con.prepareStatement(sql69);
-            PreparedStatement preparedStmt70 = con.prepareStatement(sql70);
-            
-            PreparedStatement preparedStmt71 = con.prepareStatement(sql71);
-            PreparedStatement preparedStmt72 = con.prepareStatement(sql72);
-            PreparedStatement preparedStmt73 = con.prepareStatement(sql73);
-            PreparedStatement preparedStmt74 = con.prepareStatement(sql74);
-            PreparedStatement preparedStmt75 = con.prepareStatement(sql75);
-            PreparedStatement preparedStmt76 = con.prepareStatement(sql76);
-            PreparedStatement preparedStmt77 = con.prepareStatement(sql77);
-            PreparedStatement preparedStmt78 = con.prepareStatement(sql78);
-            PreparedStatement preparedStmt79 = con.prepareStatement(sql79);
-            PreparedStatement preparedStmt80 = con.prepareStatement(sql80);
-            
-            PreparedStatement preparedStmt81 = con.prepareStatement(sql81);
-            PreparedStatement preparedStmt82 = con.prepareStatement(sql82);
-            PreparedStatement preparedStmt83 = con.prepareStatement(sql83);
-            PreparedStatement preparedStmt84 = con.prepareStatement(sql84);
-            PreparedStatement preparedStmt85 = con.prepareStatement(sql85);
-            PreparedStatement preparedStmt86 = con.prepareStatement(sql86);
-            PreparedStatement preparedStmt87 = con.prepareStatement(sql87);
-            
             PreparedStatement preparedStmt88 = con.prepareStatement(sql88);
             PreparedStatement preparedStmt89 = con.prepareStatement(sql89);
             PreparedStatement preparedStmt90 = con.prepareStatement(sql90);
@@ -588,121 +563,7 @@ public class Admin {
             PreparedStatement preparedStmt134 = con.prepareStatement(sql134);
             PreparedStatement preparedStmt135 = con.prepareStatement(sql135);
             PreparedStatement preparedStmt136 = con.prepareStatement(sql136);
-            PreparedStatement preparedStmt137 = con.prepareStatement(sql137);
-            
-            PreparedStatement preparedStmt138 = con.prepareStatement(sql138);
-            PreparedStatement preparedStmt139 = con.prepareStatement(sql139);
-            PreparedStatement preparedStmt140 = con.prepareStatement(sql140);
-            PreparedStatement preparedStmt141 = con.prepareStatement(sql141);
-            PreparedStatement preparedStmt142 = con.prepareStatement(sql142);
-            PreparedStatement preparedStmt143 = con.prepareStatement(sql143);
-            PreparedStatement preparedStmt144 = con.prepareStatement(sql144);
-            PreparedStatement preparedStmt145 = con.prepareStatement(sql145);
-            PreparedStatement preparedStmt146 = con.prepareStatement(sql146);
-            PreparedStatement preparedStmt147 = con.prepareStatement(sql147);
-            PreparedStatement preparedStmt148 = con.prepareStatement(sql148);
-            PreparedStatement preparedStmt149 = con.prepareStatement(sql149);
-            PreparedStatement preparedStmt150 = con.prepareStatement(sql150);
-            PreparedStatement preparedStmt151 = con.prepareStatement(sql151);
-            PreparedStatement preparedStmt152 = con.prepareStatement(sql152);
-            PreparedStatement preparedStmt153 = con.prepareStatement(sql153);
-            PreparedStatement preparedStmt154 = con.prepareStatement(sql154);
-            PreparedStatement preparedStmt155 = con.prepareStatement(sql155);
-            PreparedStatement preparedStmt156 = con.prepareStatement(sql156);
-            PreparedStatement preparedStmt157 = con.prepareStatement(sql157);
-            PreparedStatement preparedStmt158 = con.prepareStatement(sql158);
-            PreparedStatement preparedStmt159 = con.prepareStatement(sql159);
-            PreparedStatement preparedStmt160 = con.prepareStatement(sql160);
-            PreparedStatement preparedStmt161 = con.prepareStatement(sql161);
-            PreparedStatement preparedStmt162 = con.prepareStatement(sql162);
-            PreparedStatement preparedStmt163 = con.prepareStatement(sql163);
 
-
-            preparedStmt1.execute();
-            preparedStmt2.execute();
-            preparedStmt3.execute();
-            preparedStmt4.execute();
-            preparedStmt5.execute();
-            preparedStmt6.execute();
-            preparedStmt7.execute();
-            preparedStmt8.execute();
-            preparedStmt9.execute();
-            preparedStmt10.execute();
-            
-            preparedStmt11.execute();
-            preparedStmt12.execute();
-            preparedStmt13.execute();
-            preparedStmt14.execute();
-            preparedStmt15.execute();
-            preparedStmt16.execute();
-            preparedStmt17.execute();
-            preparedStmt18.execute();
-            preparedStmt19.execute();
-            preparedStmt20.execute();
-            
-            preparedStmt21.execute();
-            preparedStmt22.execute();
-            preparedStmt23.execute();
-            preparedStmt24.execute();
-            preparedStmt25.execute();
-            preparedStmt26.execute();
-            preparedStmt27.execute();
-            preparedStmt28.execute();
-            preparedStmt29.execute();
-            preparedStmt30.execute();
-            
-            preparedStmt31.execute();
-            preparedStmt32.execute();
-            preparedStmt33.execute();
-            preparedStmt34.execute();
-            preparedStmt35.execute();
-            preparedStmt36.execute();
-            preparedStmt37.execute();
-            preparedStmt38.execute();
-            preparedStmt39.execute();
-            preparedStmt40.execute();
-            
-            preparedStmt51.execute();
-            preparedStmt52.execute();
-            preparedStmt53.execute();
-            preparedStmt54.execute();
-            preparedStmt55.execute();
-            preparedStmt56.execute();
-            preparedStmt57.execute();
-            preparedStmt58.execute();
-            preparedStmt59.execute();
-            preparedStmt60.execute();
-            
-            preparedStmt61.execute();
-            preparedStmt62.execute();
-            preparedStmt63.execute();
-            preparedStmt64.execute();
-            preparedStmt65.execute();
-            preparedStmt66.execute();
-            preparedStmt67.execute();
-            preparedStmt68.execute();
-            preparedStmt69.execute();
-            preparedStmt70.execute();
-            
-            preparedStmt71.execute();
-            preparedStmt72.execute();
-            preparedStmt73.execute();
-            preparedStmt74.execute();
-            preparedStmt75.execute();
-            preparedStmt76.execute();
-            preparedStmt77.execute();
-            preparedStmt78.execute();
-            preparedStmt79.execute();
-            preparedStmt80.execute();
-            
-            preparedStmt81.execute();
-            preparedStmt82.execute();
-            preparedStmt83.execute();
-            preparedStmt84.execute();
-            preparedStmt85.execute();
-            preparedStmt86.execute();
-            preparedStmt87.execute();
-            
             preparedStmt88.execute();
             preparedStmt89.execute();
             preparedStmt90.execute();
@@ -752,8 +613,88 @@ public class Admin {
             preparedStmt134.execute();
             preparedStmt135.execute();
             preparedStmt136.execute();
-            preparedStmt137.execute();
-            
+
+            //EMPLOYEE -> 138 - 163
+            String sql138 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (12330,12930,'Artemisios','Andreasson','613-409-5429','397 McDonald Street, Ottawa, Ontario(ON), K1R 3X7',80000,'Ottawa')";
+            String sql139 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (14330,12930,'Heike','Jennings','613-409-5430','397 McDonald Street, Ottawa, Ontario(ON), K1R 3X7',50000,'Ottawa')";
+            String sql140 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (34530,12930,'Alekto','Okafor','613-409-5431','397 McDonald Street, Ottawa, Ontario(ON), K1R 3X7',90000,'Ottawa')";
+            String sql141 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (66630,12930,'Amy','Foster','613-409-5432','397 McDonald Street, Ottawa, Ontario(ON), K1R 3X7',54000,'Ottawa')";
+            String sql142 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (76530,12930,'Arunas','MacRae','613-409-5433','397 McDonald Street, Ottawa, Ontario(ON), K1R 3X7',50100,'Ottawa')";
+            String sql143 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (85230,12930,'Damocles','Nielson','613-409-5434','397 McDonald Street, Ottawa, Ontario(ON), K1R 3X7',58950,'Ottawa')";
+            String sql144 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + " VALUES (23031,12931,'Eimhear','Roosevelt','416-388-6699','8790 Haley Avenue, Toronto, Ontario(ON), M1Q 2X7',52000,'Toronto')";
+            String sql145 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (49531,12931,'Jagannatha','Heinz','416-388-6700','8790 Haley Avenue, Toronto, Ontario(ON), M1Q 2X7',70000,'Toronto')";
+            String sql146 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (84331,12931,'Valens','Horn','416-388-6701','8790 Haley Avenue, Toronto, Ontario(ON), M1Q 2X7',87000,'Toronto')";
+            String sql147 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (9731,12931,'Eliott','Jewel','416-388-6702','8790 Haley Avenue, Toronto, Ontario(ON), M1Q 2X7',51300,'Toronto')";
+            String sql148 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (20332,12932,'Yechezkel','Ovesen','705-780-2919','66 Bayflor Drive,  Barrie, Ontario(ON), L8S 9C0',40000,'Barrie')";
+            String sql149 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (59032,12932,'Finlay','Ford','705-780-2920','66 Bayflor Drive,  Barrie, Ontario(ON), L8S 9C0',67000,'Barrie')";
+            String sql150 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (67432,12932,'Gemma','Samson','705-780-2921','66 Bayflor Drive,  Barrie, Ontario(ON), L8S 9C0',76000,'Barrie')";
+            String sql151 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (83533,12933,'Sari','Robert','905-555-5151','441 Smithson Avenue, Hamilton, Ontario(ON), L7N 1E6',85000,'Hamilton')";
+            String sql152 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (98533,12933,'Mikey','Garfield','905-555-5152','441 Smithson Avenue, Hamilton, Ontario(ON), L7N 1E6',83000,'Hamilton')";
+            String sql153 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (5133,12933,'Christiana','Farnham','905-555-5153','441 Smithson Avenue, Hamilton, Ontario(ON), L7N 1E6',60000,'Hamilton')";
+            String sql154 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (40534,12934,'Gavril','Alfero','905-311-7777','384 Eastside Road, Mississauga, Ontario(ON), L9A 2X9',45500,'Mississauga')";
+            String sql155 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (58934,12934,'Chrissie','Lockwood','905-311-7778','384 Eastside Road, Mississauga, Ontario(ON), L9A 2X9',93000,'Mississauga')";
+            String sql156 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (92434,12934,'Thurstan','Mayes','905-311-7779','384 Eastside Road, Mississauga, Ontario(ON), L9A 2X9',57800,'Mississauga')";
+            String sql157 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (56935,12935,'Lizzy','Ongaro','905-844-7909','932 Orange Rd, Milton, Ontario(ON), L0E 2V8',45700,'Milton')";
+            String sql158 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (63635,12935,'Thornton','Ness','905-844-7910','932 Orange Rd, Milton, Ontario(ON), L0E 2V8',88000,'Milton')";
+            String sql159 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (90336,12936,'Visnja','Simmon','613-888-5415','123 Prince St, Kingston, Ontario(ON), K9H 3Y4',67400,'Kingston')";
+            String sql160 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (6536,12936,'Aubrie','Dyson','613-888-5416','123 Prince St, Kingston, Ontario(ON), K9H 3Y4',53500,'Kingston')";
+            String sql161 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (7736,12936,'Abbey','Cooks','613-888-5417','123 Prince St, Kingston, Ontario(ON), K9H 3Y4',74000,'Kingston')";
+            String sql162 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (15637,12937,'John','Kaspersen','905-632-5097','230 Baxter Street,  London,  Ontario(ON), L2X 2Q1',45000,'London')";
+            String sql163 = "INSERT INTO EMPLOYEE (EMPLOYEE_ID, BRANCH_ID, FIRST_NAME, LAST_NAME, PHONE_NUMBER, ADDRESS, SALARY, EMP_CITY)"
+                    + "VALUES (29837,12937,'Seyfullah','Lis','905-620-5180','459 Dolly Street,  London,  Ontario(ON), L8H 2V2',86000,'London')";
+
+            PreparedStatement preparedStmt138 = con.prepareStatement(sql138);
+            PreparedStatement preparedStmt139 = con.prepareStatement(sql139);
+            PreparedStatement preparedStmt140 = con.prepareStatement(sql140);
+            PreparedStatement preparedStmt141 = con.prepareStatement(sql141);
+            PreparedStatement preparedStmt142 = con.prepareStatement(sql142);
+            PreparedStatement preparedStmt143 = con.prepareStatement(sql143);
+            PreparedStatement preparedStmt144 = con.prepareStatement(sql144);
+            PreparedStatement preparedStmt145 = con.prepareStatement(sql145);
+            PreparedStatement preparedStmt146 = con.prepareStatement(sql146);
+            PreparedStatement preparedStmt147 = con.prepareStatement(sql147);
+            PreparedStatement preparedStmt148 = con.prepareStatement(sql148);
+            PreparedStatement preparedStmt149 = con.prepareStatement(sql149);
+            PreparedStatement preparedStmt150 = con.prepareStatement(sql150);
+            PreparedStatement preparedStmt151 = con.prepareStatement(sql151);
+            PreparedStatement preparedStmt152 = con.prepareStatement(sql152);
+            PreparedStatement preparedStmt153 = con.prepareStatement(sql153);
+            PreparedStatement preparedStmt154 = con.prepareStatement(sql154);
+            PreparedStatement preparedStmt155 = con.prepareStatement(sql155);
+            PreparedStatement preparedStmt156 = con.prepareStatement(sql156);
+            PreparedStatement preparedStmt157 = con.prepareStatement(sql157);
+            PreparedStatement preparedStmt158 = con.prepareStatement(sql158);
+            PreparedStatement preparedStmt159 = con.prepareStatement(sql159);
+            PreparedStatement preparedStmt160 = con.prepareStatement(sql160);
+            PreparedStatement preparedStmt161 = con.prepareStatement(sql161);
+            PreparedStatement preparedStmt162 = con.prepareStatement(sql162);
+            PreparedStatement preparedStmt163 = con.prepareStatement(sql163);
+
             preparedStmt138.execute();
             preparedStmt139.execute();
             preparedStmt140.execute();
@@ -781,6 +722,110 @@ public class Admin {
             preparedStmt162.execute();
             preparedStmt163.execute();
 
+            //BANK TELLER -> 59 - 73
+            String sql59 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85230,76530)";
+            String sql60 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85330,14330)";
+            String sql61 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85530,85230)";
+            String sql62 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85630,66630)";
+            String sql63 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85731,09731)";
+            String sql64 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85831,23031)";
+            String sql65 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (85932,20332)";
+            String sql66 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86032,59032)";
+            String sql67 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86133,05133)";
+            String sql68 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86234,40534)";
+            String sql69 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86334,92434)";
+            String sql70 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86435,56935)";
+            String sql71 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86536,06536)";
+            String sql72 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86636,90336)";
+            String sql73 = "INSERT INTO BANKTELLER (TELLER_ID, EMPLOYEE_ID) VALUES (86737,15637)";
+
+            PreparedStatement preparedStmt59 = con.prepareStatement(sql59);
+            PreparedStatement preparedStmt60 = con.prepareStatement(sql60);
+            PreparedStatement preparedStmt61 = con.prepareStatement(sql61);
+            PreparedStatement preparedStmt62 = con.prepareStatement(sql62);
+            PreparedStatement preparedStmt63 = con.prepareStatement(sql63);
+            PreparedStatement preparedStmt64 = con.prepareStatement(sql64);
+            PreparedStatement preparedStmt65 = con.prepareStatement(sql65);
+            PreparedStatement preparedStmt66 = con.prepareStatement(sql66);
+            PreparedStatement preparedStmt67 = con.prepareStatement(sql67);
+            PreparedStatement preparedStmt68 = con.prepareStatement(sql68);
+            PreparedStatement preparedStmt69 = con.prepareStatement(sql69);
+            PreparedStatement preparedStmt70 = con.prepareStatement(sql70);
+            PreparedStatement preparedStmt71 = con.prepareStatement(sql71);
+            PreparedStatement preparedStmt72 = con.prepareStatement(sql72);
+            PreparedStatement preparedStmt73 = con.prepareStatement(sql73);
+
+            preparedStmt59.execute();
+            preparedStmt60.execute();
+            preparedStmt61.execute();
+            preparedStmt62.execute();
+            preparedStmt63.execute();
+            preparedStmt64.execute();
+            preparedStmt65.execute();
+            preparedStmt66.execute();
+            preparedStmt67.execute();
+            preparedStmt68.execute();
+            preparedStmt69.execute();
+            preparedStmt70.execute();
+            preparedStmt71.execute();
+            preparedStmt72.execute();
+            preparedStmt73.execute();
+
+            //BRANCH MANAGER -> 74 - 83
+            String sql74 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45030,12330,85230))";
+            String sql75 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (85130,34530,85330)";
+            String sql76 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45131,84331,85731)";
+            String sql77 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45332,67432,85932)";
+            String sql78 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45433,83533,86032)";
+            String sql79 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (12933,98533,86133)";
+            String sql80 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45534,58934,86234)";
+            String sql81 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45635,63635,86435)";
+            String sql82 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45736,07736,86536)";
+            String sql83 = "INSERT INTO BRANCHMANAGER (MANAGER_ID, EMPLOYEE_ID, TELLER_ID) VALUES (45837,29837,86737)";
+
+            PreparedStatement preparedStmt74 = con.prepareStatement(sql74);
+            PreparedStatement preparedStmt75 = con.prepareStatement(sql75);
+            PreparedStatement preparedStmt76 = con.prepareStatement(sql76);
+            PreparedStatement preparedStmt77 = con.prepareStatement(sql77);
+            PreparedStatement preparedStmt78 = con.prepareStatement(sql78);
+            PreparedStatement preparedStmt79 = con.prepareStatement(sql79);
+            PreparedStatement preparedStmt80 = con.prepareStatement(sql80);
+            PreparedStatement preparedStmt81 = con.prepareStatement(sql81);
+            PreparedStatement preparedStmt82 = con.prepareStatement(sql82);
+            PreparedStatement preparedStmt83 = con.prepareStatement(sql83);
+
+            preparedStmt74.execute();
+            preparedStmt75.execute();
+            preparedStmt76.execute();
+            preparedStmt77.execute();
+            preparedStmt78.execute();
+            preparedStmt79.execute();
+            preparedStmt80.execute();
+            preparedStmt81.execute();
+            preparedStmt82.execute();
+            preparedStmt83.execute();
+
+            //LOANS -> 164 - 182
+            //TRANSACTION TYPE -> 84 - 87
+//            String sql84 = "INSERT INTO TRANSACTIONTYPE (TRANSACTION_TYPE, TRANSACTION_NAME, TRANSACTION_DESCRIPTION)"
+//                    + "VALUES ('Credit','Withdraw','Withdraw Money out of a bank account')";
+//            String sql85 = "INSERT INTO TRANSACTIONTYPE (TRANSACTION_TYPE, TRANSACTION_NAME, TRANSACTION_DESCRIPTION)"
+//                    + "VALUES ('Debit','Deposit','Deposit Money into a bank account')";
+//            String sql86 = "INSERT INTO TRANSACTIONTYPE (TRANSACTION_TYPE, TRANSACTION_NAME, TRANSACTION_DESCRIPTION)"
+//                    + "VALUES ('Debit','Send','Send money to an account')";
+//            String sql87 = "INSERT INTO TRANSACTIONTYPE (TRANSACTION_TYPE, TRANSACTION_NAME, TRANSACTION_DESCRIPTION)"
+//                    + "VALUES ('Credit','Pay Bills','Pay credit card bills')";
+//
+//            PreparedStatement preparedStmt84 = con.prepareStatement(sql84);
+//            PreparedStatement preparedStmt85 = con.prepareStatement(sql85);
+//            PreparedStatement preparedStmt86 = con.prepareStatement(sql86);
+//            PreparedStatement preparedStmt87 = con.prepareStatement(sql87);
+//
+//            preparedStmt84.execute();
+//            preparedStmt85.execute();
+//            preparedStmt86.execute();
+//            preparedStmt87.execute();
+            //TRANSACTION -> 183 - 193
             System.out.println("Tables Successfully Populated ");
             con.close();
 
@@ -798,15 +843,15 @@ public class Admin {
                     username, password);
             Statement st = con.createStatement();
             String sql = "DROP TABLE Transactions PURGE";
-            String sql2 =  "DROP TABLE Loans PURGE";
-            String sql3 =  "DROP TABLE TransactionType PURGE";
-            String sql4 =  "Drop TABLE BranchManager PURGE";
-            String sql5 =  "DROP TABLE BankTeller PURGE";
-            String sql6 =  "DROP TABLE Employee PURGE";
-            String sql7 =  "DROP TABLE Customer PURGE";
-            String sql8 =  "DROP TABLE Accounts PURGE";
-            String sql9 =  "DROP TABLE BankBranch PURGE";
-            String sql10 =  "DROP TABLE Bank PURGE";
+            String sql2 = "DROP TABLE Loans PURGE";
+            String sql3 = "DROP TABLE TransactionType PURGE";
+            String sql4 = "Drop TABLE BranchManager PURGE";
+            String sql5 = "DROP TABLE BankTeller PURGE";
+            String sql6 = "DROP TABLE Employee PURGE";
+            String sql7 = "DROP TABLE Customer PURGE";
+            String sql8 = "DROP TABLE Accounts PURGE";
+            String sql9 = "DROP TABLE BankBranch PURGE";
+            String sql10 = "DROP TABLE Bank PURGE";
 
             PreparedStatement preparedStmt1 = con.prepareStatement(sql);
             PreparedStatement preparedStmt2 = con.prepareStatement(sql2);
