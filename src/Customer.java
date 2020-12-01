@@ -100,7 +100,7 @@ public class Customer {
                 PreparedStatement ps = con.prepareStatement(sql);
                 ps.setDouble(1, moneyTransfer);
                 ps.setInt(2, aID);
-                System.out.println(" **** Amount $" + moneyTransfer + " successfully added to Account ID  " + aID + "  **** ");
+                System.out.println("\n **** Amount $" + moneyTransfer + " successfully added to Account ID  " + aID + "  **** ");
                 ps.execute();
                 con.close();
                 b = false;
@@ -147,7 +147,7 @@ public class Customer {
                 prepStmt.setInt(2, lID);
                 prepStmt.execute();
 
-                System.out.println(" **** Amount $" + payLoan + " successfully paid towards Loan ID " + lID + "  **** ");
+                System.out.println("\n **** Amount $" + payLoan + " successfully paid towards Loan ID " + lID + "  **** ");
                 con.close();
 
                 b = false;
